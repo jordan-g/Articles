@@ -60,7 +60,6 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSSearchFieldDele
     
     @IBAction func search(sender: NSSearchField) {
         let text = sender.stringValue
-        Swift.print(text)
 
         viewController?.searchFor(text: text)
     }

@@ -44,9 +44,6 @@ class ReferenceReader: NSObject {
         var articlePropertyDicts: [Dictionary<String, String>] = []
         
         for articleString in articleStrings {
-            if articleString.contains("http://journal.frontiersin.org/Article/10.3389/fncom.2016.00094/abstract") {
-                Swift.print(articleString)
-            }
             // Get title
             titleStrings               = matchStringWithRegex(string: articleString, regexPattern: titleRegexPattern)
             var title : String
@@ -301,12 +298,8 @@ class ReferenceReader: NSObject {
     
     func matchStringWithRegex(string: String, regexPattern: String) -> [String] {
         let regex = try! NSRegularExpression(pattern: regexPattern, options: [])
-//        Swift.print(string.characters.count)
-//        Swift.print(regexPattern)
         
         let matches = regex.matches(in: string, options: [], range: NSRange(location: 0, length: string.characters.count))
-        
-//        Swift.print(matches)
         
         var substrings = [String]()
         
@@ -314,9 +307,7 @@ class ReferenceReader: NSObject {
             let range = match.rangeAt(1)
             let r = string.index(string.startIndex, offsetBy: range.location) ..<
                 string.index(string.startIndex, offsetBy: range.location+range.length)
-//            Swift.print(r)
             substrings.append(string.substring(with: r))
-//            Swift.print(string.substring(with: r))
         }
         
         return substrings

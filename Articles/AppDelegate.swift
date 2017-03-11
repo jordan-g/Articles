@@ -66,7 +66,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Create the coordinator and store
         var coordinator: NSPersistentStoreCoordinator? = nil
         if failError == nil {
-            Swift.print(self.applicationDocumentsDirectory)
             coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
             let url = self.applicationDocumentsDirectory.appendingPathComponent("Articles.storedata")
             do {
