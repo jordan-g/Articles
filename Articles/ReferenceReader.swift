@@ -27,7 +27,6 @@ class ReferenceReader: NSObject {
         let dateRegexPattern           = "(?:Y1|Y2)  - (.*)"
         
         var titleStrings: [String]          = []
-        var authorsStrings: [String]        = []
         var journalStrings: [String]        = []
         var abstractStrings: [String]       = []
         var issnStrings: [String]           = []

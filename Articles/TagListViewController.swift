@@ -127,7 +127,7 @@ class TagListViewController: NSViewController, NSTableViewDelegate, NSTableViewD
             let tag = mainController.tagData[row-1]
             
             for index in indexes {
-                let article = mainController.filteredArticleData[index] as! Article
+                let article = mainController.filteredArticleData[index]
                 tag.addToArticle(article)
             }
         }

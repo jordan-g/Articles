@@ -161,7 +161,7 @@ class ArticleListViewController: NSViewController, NSTableViewDelegate, NSTableV
     override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
         // Get references to child view controllers
         if segue.identifier == "ArticlePropertiesView" {
-            ArticlePropertiesViewController = segue.destinationController as! ArticlePropertiesViewController
+            ArticlePropertiesViewController = segue.destinationController as? ArticlePropertiesViewController
             ArticlePropertiesViewController?.mainController = self.mainController
             ArticlePropertiesViewController?.articleListViewController = self
             ArticlePropertiesViewController?.view.translatesAutoresizingMaskIntoConstraints = false

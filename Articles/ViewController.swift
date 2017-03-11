@@ -365,15 +365,15 @@ class ViewController: NSViewController {
     override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
         // Get references to child view controllers
         if segue.identifier == "articleListView" {
-            articleListViewController = segue.destinationController as! ArticleListViewController
+            articleListViewController = segue.destinationController as? ArticleListViewController
             articleListViewController?.mainController = self
         }
         else if segue.identifier == "PDFView" {
-            pdfViewController = segue.destinationController as! PDFViewController
+            pdfViewController = segue.destinationController as? PDFViewController
             pdfViewController?.mainController = self
         }
         else if segue.identifier == "tagListView" {
-            tagListViewController = segue.destinationController as! TagListViewController
+            tagListViewController = segue.destinationController as? TagListViewController
             tagListViewController?.mainController = self
         }
     }
