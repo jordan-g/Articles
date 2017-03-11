@@ -1,6 +1,6 @@
 //
 //  ReferenceReader.swift
-//  Papers
+//  Articles
 //
 //  Created by Jordan Guerguiev on 2017-02-17.
 //  Copyright © 2017 Jordan Guerguiev. All rights reserved.
@@ -40,16 +40,16 @@ class ReferenceReader: NSObject {
         var relatedRecordsStrings: [String] = []
         var dateStrings: [String]           = []
         
-        let paperStrings = RISString.components(separatedBy: "\n\n")
+        let articleStrings = RISString.components(separatedBy: "\n\n")
         
-        var paperPropertyDicts: [Dictionary<String, String>] = []
+        var articlePropertyDicts: [Dictionary<String, String>] = []
         
-        for paperString in paperStrings {
-            if paperString.contains("http://journal.frontiersin.org/Article/10.3389/fncom.2016.00094/abstract") {
-                Swift.print(paperString)
+        for articleString in articleStrings {
+            if articleString.contains("http://journal.frontiersin.org/Article/10.3389/fncom.2016.00094/abstract") {
+                Swift.print(articleString)
             }
             // Get title
-            titleStrings               = matchStringWithRegex(string: paperString, regexPattern: titleRegexPattern)
+            titleStrings               = matchStringWithRegex(string: articleString, regexPattern: titleRegexPattern)
             var title : String
 
             if titleStrings.count == 0 {
@@ -57,19 +57,19 @@ class ReferenceReader: NSObject {
             } else {
                 title = titleStrings[0]
             }
-            var paperPropertyDict: [String: String] = ["title": title]
+            var articlePropertyDict: [String: String] = ["title": title]
 
             // Get authors
-            let authors        = matchStringWithRegex(string: paperString, regexPattern: authorsRegexPattern).joined(separator: "; ")
-            paperPropertyDict["authors"] = authors
+            let authors        = matchStringWithRegex(string: articleString, regexPattern: authorsRegexPattern).joined(separator: "; ")
+            articlePropertyDict["authors"] = authors
 
             // Get journal
-            journalStrings             = matchStringWithRegex(string: paperString, regexPattern: journalRegexPattern)
+            journalStrings             = matchStringWithRegex(string: articleString, regexPattern: journalRegexPattern)
             var journal : String = ""
             
             if journalStrings.count == 0 {
                 let altJournalRegexPattern        = "PB  - (.*)"
-                journalStrings        = matchStringWithRegex(string: paperString, regexPattern: altJournalRegexPattern)
+                journalStrings        = matchStringWithRegex(string: articleString, regexPattern: altJournalRegexPattern)
                 if journalStrings.count == 0 {
                     journal = ""
                 } else {
@@ -85,10 +85,10 @@ class ReferenceReader: NSObject {
             default: break
             }
 
-            paperPropertyDict["journal"] = journal
+            articlePropertyDict["journal"] = journal
 
             // Get abstract
-            abstractStrings               = matchStringWithRegex(string: paperString, regexPattern: abstractRegexPattern)
+            abstractStrings               = matchStringWithRegex(string: articleString, regexPattern: abstractRegexPattern)
             var abstract : String
 
             if abstractStrings.count == 0 {
@@ -96,10 +96,10 @@ class ReferenceReader: NSObject {
             } else {
                 abstract = abstractStrings[0]
             }
-            paperPropertyDict["abstract"] = abstract
+            articlePropertyDict["abstract"] = abstract
 
             // Get ISSN/ISBN
-            issnStrings               = matchStringWithRegex(string: paperString, regexPattern: issnRegexPattern)
+            issnStrings               = matchStringWithRegex(string: articleString, regexPattern: issnRegexPattern)
             var issn : String
 
             if issnStrings.count == 0 {
@@ -107,10 +107,10 @@ class ReferenceReader: NSObject {
             } else {
                 issn = issnStrings[0]
             }
-            paperPropertyDict["issn"] = issn
+            articlePropertyDict["issn"] = issn
             
             // Get volume
-            volumeStrings               = matchStringWithRegex(string: paperString, regexPattern: volumeRegexPattern)
+            volumeStrings               = matchStringWithRegex(string: articleString, regexPattern: volumeRegexPattern)
             var volume : String
 
             if volumeStrings.count == 0 {
@@ -118,10 +118,10 @@ class ReferenceReader: NSObject {
             } else {
                 volume = volumeStrings[0]
             }
-            paperPropertyDict["volume"] = volume
+            articlePropertyDict["volume"] = volume
 
             // Get issue
-            issueStrings               = matchStringWithRegex(string: paperString, regexPattern: issueRegexPattern)
+            issueStrings               = matchStringWithRegex(string: articleString, regexPattern: issueRegexPattern)
             var issue : String
 
             if issueStrings.count == 0 {
@@ -129,10 +129,10 @@ class ReferenceReader: NSObject {
             } else {
                 issue = issueStrings[0]
             }
-            paperPropertyDict["issue"] = issue
+            articlePropertyDict["issue"] = issue
 
             // Get pages
-            startPageStrings               = matchStringWithRegex(string: paperString, regexPattern: startPageRegexPattern)
+            startPageStrings               = matchStringWithRegex(string: articleString, regexPattern: startPageRegexPattern)
             var startPage : String
 
             if startPageStrings.count == 0 {
@@ -140,9 +140,9 @@ class ReferenceReader: NSObject {
             } else {
                 startPage = startPageStrings[0]
             }
-            paperPropertyDict["startPage"] = startPage
+            articlePropertyDict["startPage"] = startPage
             
-            endPageStrings               = matchStringWithRegex(string: paperString, regexPattern: endPageRegexPattern)
+            endPageStrings               = matchStringWithRegex(string: articleString, regexPattern: endPageRegexPattern)
             var endPage : String
 
             if endPageStrings.count == 0 {
@@ -150,10 +150,10 @@ class ReferenceReader: NSObject {
             } else {
                 endPage = endPageStrings[0]
             }
-            paperPropertyDict["endPage"] = endPage
+            articlePropertyDict["endPage"] = endPage
             
             // Get type
-            typeStrings               = matchStringWithRegex(string: paperString, regexPattern: typeRegexPattern)
+            typeStrings               = matchStringWithRegex(string: articleString, regexPattern: typeRegexPattern)
             var type : String
 
             if typeStrings.count == 0 {
@@ -168,10 +168,10 @@ class ReferenceReader: NSObject {
             default: break
             }
 
-            paperPropertyDict["type"] = type
+            articlePropertyDict["type"] = type
             
             // Get URL
-            urlStrings               = matchStringWithRegex(string: paperString, regexPattern: urlRegexPattern)
+            urlStrings               = matchStringWithRegex(string: articleString, regexPattern: urlRegexPattern)
             var url : String
 
             if urlStrings.count == 0 {
@@ -179,10 +179,10 @@ class ReferenceReader: NSObject {
             } else {
                 url = urlStrings[0]
             }
-            paperPropertyDict["url"] = url
+            articlePropertyDict["url"] = url
             
             // Get related records
-            relatedRecordsStrings               = matchStringWithRegex(string: paperString, regexPattern: relatedRecordsRegexPattern)
+            relatedRecordsStrings               = matchStringWithRegex(string: articleString, regexPattern: relatedRecordsRegexPattern)
             var relatedRecords : String
 
             if relatedRecordsStrings.count == 0 {
@@ -190,16 +190,16 @@ class ReferenceReader: NSObject {
             } else {
                 relatedRecords = relatedRecordsStrings[0]
             }
-            paperPropertyDict["relatedRecords"] = relatedRecords
+            articlePropertyDict["relatedRecords"] = relatedRecords
 
             // Get date
-            dateStrings             = matchStringWithRegex(string: paperString, regexPattern: dateRegexPattern)
+            dateStrings             = matchStringWithRegex(string: articleString, regexPattern: dateRegexPattern)
             var date : String
             
             if dateStrings.count == 0 {
                 do {
                     let altDateRegexPattern        = "PY  - (.*)"
-                    date        = matchStringWithRegex(string: paperString, regexPattern: altDateRegexPattern).joined(separator: "; ")
+                    date        = matchStringWithRegex(string: articleString, regexPattern: altDateRegexPattern).joined(separator: "; ")
                 } catch {
                     date = ""
                 }
@@ -207,12 +207,12 @@ class ReferenceReader: NSObject {
                 date = dateStrings[0]
             }
             
-            paperPropertyDict["date"] = date.replacingOccurrences(of: "//print", with: "")
+            articlePropertyDict["date"] = date.replacingOccurrences(of: "//print", with: "")
 
-            paperPropertyDicts.append(paperPropertyDict)
+            articlePropertyDicts.append(articlePropertyDict)
         }
 
-        return paperPropertyDicts
+        return articlePropertyDicts
     }
     
     func readNBIBFile(path : String) -> (String, String, String, String, String, String,

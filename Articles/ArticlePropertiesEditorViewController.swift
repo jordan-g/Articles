@@ -26,7 +26,7 @@ class ArticlePropertiesEditorViewController: NSViewController {
     @IBOutlet weak var saveButton: NSButton!
     
     var windowController : WindowController!
-    var paper: Paper!
+    var article: Article!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,67 +35,67 @@ class ArticlePropertiesEditorViewController: NSViewController {
         authorsTextField.textContainer?.widthTracksTextView = false
         authorsTextField.textContainer?.containerSize = NSMakeSize(100000, 20)
         
-        if let title = paper.value(forKey: "title") as? String {
+        if let title = article.value(forKey: "title") as? String {
             titleTextField.string = title
         } else {
             titleTextField.string = ""
         }
-        if let authors = paper.value(forKey: "authors") as? String {
+        if let authors = article.value(forKey: "authors") as? String {
             authorsTextField.string = authors
         } else {
             authorsTextField.string = ""
         }
-        if let journal = paper.value(forKey: "journal") as? String {
+        if let journal = article.value(forKey: "journal") as? String {
             journalTextField.stringValue = journal
         } else {
             journalTextField.stringValue = ""
         }
-        if let issn = paper.value(forKey: "issn") as? String {
+        if let issn = article.value(forKey: "issn") as? String {
             issnTextField.stringValue = issn
         } else {
             issnTextField.stringValue = ""
         }
-        if let volume = paper.value(forKey: "volume") as? String {
+        if let volume = article.value(forKey: "volume") as? String {
             volumeTextField.stringValue = volume
         } else {
             volumeTextField.stringValue = ""
         }
-        if let issue = paper.value(forKey: "issue") as? String {
+        if let issue = article.value(forKey: "issue") as? String {
             issueTextField.stringValue = issue
         } else {
             issueTextField.stringValue = ""
         }
-        if let startPage = paper.value(forKey: "startPage") as? String {
+        if let startPage = article.value(forKey: "startPage") as? String {
             startPageTextField.stringValue = startPage
         } else {
             startPageTextField.stringValue = ""
         }
-        if let endPage = paper.value(forKey: "endPage") as? String {
+        if let endPage = article.value(forKey: "endPage") as? String {
             endPageTextField.stringValue = endPage
         } else {
             endPageTextField.stringValue = ""
         }
-        if let type = paper.value(forKey: "type") as? String {
+        if let type = article.value(forKey: "type") as? String {
             typeTextField.stringValue = type
         } else {
             typeTextField.stringValue = ""
         }
-        if let url = paper.value(forKey: "url") as? String {
+        if let url = article.value(forKey: "url") as? String {
             urlTextField.stringValue = url
         } else {
             urlTextField.stringValue = ""
         }
-        if let relatedRecords = paper.value(forKey: "relatedRecords") as? String {
+        if let relatedRecords = article.value(forKey: "relatedRecords") as? String {
             relatedRecordsTextField.stringValue = relatedRecords
         } else {
             relatedRecordsTextField.stringValue = ""
         }
-        if let abstract = paper.value(forKey: "abstract") as? String {
+        if let abstract = article.value(forKey: "abstract") as? String {
             abstractTextField.string = abstract
         } else {
             abstractTextField.string = ""
         }
-        if let date = paper.value(forKey: "date") as? String {
+        if let date = article.value(forKey: "date") as? String {
             dateTextField.stringValue = date
         } else {
             dateTextField.stringValue = ""
@@ -124,7 +124,7 @@ class ArticlePropertiesEditorViewController: NSViewController {
     
     @IBAction func accept(sender: NSButton) {
         let properties = getPropertiesFromViews()
-        windowController.updateSelectedPaper(properties: properties)
+        windowController.updateSelectedArticle(properties: properties)
         dismiss(sender)
     }
 }

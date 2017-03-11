@@ -1,6 +1,6 @@
 //
 //  PDFViewController.swift
-//  Papers
+//  Articles
 //
 //  Created by Jordan Guerguiev on 2017-02-22.
 //  Copyright © 2017 Jordan Guerguiev. All rights reserved.
@@ -23,8 +23,8 @@ class PDFViewController: NSViewController {
         pdfView.document = nil
     }
 
-    func updatePDFView(paper: Paper) {
-        if let location = paper.value(forKey: "pdfLocation") as? String {
+    func updatePDFView(article: Article) {
+        if let location = article.value(forKey: "pdfLocation") as? String {
             if (location == "") {
                 pdfView.document = nil
             } else {

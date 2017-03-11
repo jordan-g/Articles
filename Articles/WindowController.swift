@@ -1,6 +1,6 @@
 //
 //  WindowController.swift
-//  Papers
+//  Articles
 //
 //  Created by Jordan Guerguiev on 2017-02-25.
 //  Copyright © 2017 Jordan Guerguiev. All rights reserved.
@@ -35,7 +35,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSSearchFieldDele
         searchBar.sendsSearchStringImmediately = true
     }
     
-    @IBAction func importPaper(sender: AnyObject) {
+    @IBAction func importArticle(sender: AnyObject) {
         let dialog = NSOpenPanel()
         
         dialog.allowedFileTypes = ["ris", "nbib"]
@@ -46,16 +46,16 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSSearchFieldDele
                 if let result = dialog.url {
                     let path = result.path
                     
-                    // Import papers from the selected file
-                    self.viewController?.importPapers(path: path)
+                    // Import articles from the selected file
+                    self.viewController?.importArticles(path: path)
                 }
             }
             
         })
     }
     
-    @IBAction func deleteSelectedPapers(sender: Any?) {
-        self.viewController?.articleListViewController?.deleteSelectedPapers(sender: sender)
+    @IBAction func deleteSelectedArticles(sender: Any?) {
+        self.viewController?.articleListViewController?.deleteSelectedArticles(sender: sender)
     }
     
     @IBAction func search(sender: NSSearchField) {
@@ -69,8 +69,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSSearchFieldDele
         editButton.isEnabled = bool
     }
 
-    func updateSelectedPaper(properties: Dictionary<String, String>) {
-        viewController.updateSelectedPaper(properties: properties)
+    func updateSelectedArticle(properties: Dictionary<String, String>) {
+        viewController.updateSelectedArticle(properties: properties)
     }
     
     override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
@@ -78,31 +78,31 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSSearchFieldDele
         if segue.identifier == "ArticlePropertiesEditorView" {
             ArticlePropertiesEditorViewController = segue.destinationController as! ArticlePropertiesEditorViewController
             ArticlePropertiesEditorViewController.windowController = self
-            ArticlePropertiesEditorViewController.paper = (viewController?.selectedPapers[0])!
+            ArticlePropertiesEditorViewController.article = (viewController?.selectedArticles[0])!
         }
     }
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-        if identifier == "ArticlePropertiesEditorView" && viewController?.selectedPapers.count == 1 {
+        if identifier == "ArticlePropertiesEditorView" && viewController?.selectedArticles.count == 1 {
             return true
         } else {
             return false
         }
     }
     
-    @IBAction func editSelectedPaper(sender: Any?) {
+    @IBAction func editSelectedArticle(sender: Any?) {
         self.performSegue(withIdentifier: "ArticlePropertiesEditorView", sender: self)
     }
     
     override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
-        print("validating", menuItem.identifier)
         if menuItem.tag == 1 {
-            if viewController.selectedPapers.count == 1 {
-                var paperTitle = viewController.selectedPapers[0].value(forKey: "title") as! String
-                if paperTitle.characters.count > 20 {
-                    paperTitle = "\(paperTitle.substring(to: ))..."
+            if viewController.selectedArticles.count == 1 {
+                var articleTitle = viewController.selectedArticles[0].value(forKey: "title") as! String
+                if articleTitle.characters.count > 50 {
+                    let substring = articleTitle.substring(to: articleTitle.index(articleTitle.startIndex, offsetBy: 50))
+                    articleTitle = "\(substring)..."
                 }
-                menuItem.title = "Edit \"\(viewController.selectedPapers[0].value(forKey: "title")!)\""
+                menuItem.title = "Edit \"\(articleTitle)\""
                 return true
             } else {
                 return false

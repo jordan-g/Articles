@@ -51,10 +51,10 @@ class TagListViewController: NSViewController, NSTableViewDelegate, NSTableViewD
             if tableColumn!.identifier == "name" {
                 result.textField?.stringValue = "All"
                 
-                let numPapers = mainController.paperData.count
+                let numArticles = mainController.articleData.count
                 
                 let countLabel = result.viewWithTag(1) as! NSTextField
-                countLabel.stringValue = String(numPapers)
+                countLabel.stringValue = String(numArticles)
             }
             result.textField?.isEditable = false
         } else {
@@ -68,10 +68,10 @@ class TagListViewController: NSViewController, NSTableViewDelegate, NSTableViewD
                     result.textField?.stringValue = ""
                 }
                 
-                if let numPapers = tag.paper?.count {
+                if let numArticles = tag.article?.count {
                     let countLabel = result.viewWithTag(1) as! NSTextField
-                    countLabel.stringValue = String(numPapers)
-//                    result.textField?.stringValue = String(numPapers)
+                    countLabel.stringValue = String(numArticles)
+//                    result.textField?.stringValue = String(numArticles)
                 } else {
                     let countLabel = result.viewWithTag(1) as! NSTextField
                     countLabel.stringValue = String("0")
@@ -127,8 +127,8 @@ class TagListViewController: NSViewController, NSTableViewDelegate, NSTableViewD
             let tag = mainController.tagData[row-1]
             
             for index in indexes {
-                let paper = mainController.filteredPaperData[index] as! Paper
-                tag.addToPaper(paper)
+                let article = mainController.filteredArticleData[index] as! Article
+                tag.addToArticle(article)
             }
         }
         

@@ -48,7 +48,7 @@ class ArticlePropertiesViewController: NSViewController {
         dateTextField?.stringValue           = ""
     }
 
-    func updatePaperFromViews(paper : Paper) {
+    func updateArticleFromViews(article : Article) {
         let journal        = journalTextField.stringValue
         let issn           = issnTextField.stringValue
         let volume         = volumeTextField.stringValue
@@ -61,56 +61,56 @@ class ArticlePropertiesViewController: NSViewController {
         let abstract       = abstractTextField.stringValue
         let date           = dateTextField.stringValue
 
-        paper.setValue(journal, forKey: "journal")
-        paper.setValue(issn, forKey: "issn")
-        paper.setValue(volume, forKey: "volume")
-        paper.setValue(issue, forKey: "issue")
-        paper.setValue(startPage, forKey: "startPage")
-        paper.setValue(endPage, forKey: "endPage")
-        paper.setValue(type, forKey: "type")
-        paper.setValue(url, forKey: "url")
-        paper.setValue(relatedRecords, forKey: "relatedRecords")
-        paper.setValue(abstract, forKey: "abstract")
-        paper.setValue(date, forKey: "date")
+        article.setValue(journal, forKey: "journal")
+        article.setValue(issn, forKey: "issn")
+        article.setValue(volume, forKey: "volume")
+        article.setValue(issue, forKey: "issue")
+        article.setValue(startPage, forKey: "startPage")
+        article.setValue(endPage, forKey: "endPage")
+        article.setValue(type, forKey: "type")
+        article.setValue(url, forKey: "url")
+        article.setValue(relatedRecords, forKey: "relatedRecords")
+        article.setValue(abstract, forKey: "abstract")
+        article.setValue(date, forKey: "date")
     }
 
-    func updateViews(paper : Paper) {
-        if let journal = paper.value(forKey: "journal") as? String {
+    func updateViews(article : Article) {
+        if let journal = article.value(forKey: "journal") as? String {
             journalTextField.stringValue = journal
         } else {
             journalTextField.stringValue = ""
         }
-        if let issn = paper.value(forKey: "issn") as? String {
+        if let issn = article.value(forKey: "issn") as? String {
             issnTextField.stringValue = issn
         } else {
             issnTextField.stringValue = ""
         }
-        if let volume = paper.value(forKey: "volume") as? String {
+        if let volume = article.value(forKey: "volume") as? String {
             volumeTextField.stringValue = volume
         } else {
             volumeTextField.stringValue = ""
         }
-        if let issue = paper.value(forKey: "issue") as? String {
+        if let issue = article.value(forKey: "issue") as? String {
             issueTextField.stringValue = issue
         } else {
             issueTextField.stringValue = ""
         }
-        if let startPage = paper.value(forKey: "startPage") as? String {
+        if let startPage = article.value(forKey: "startPage") as? String {
             startPageTextField.stringValue = startPage
         } else {
             startPageTextField.stringValue = ""
         }
-        if let endPage = paper.value(forKey: "endPage") as? String {
+        if let endPage = article.value(forKey: "endPage") as? String {
             endPageTextField.stringValue = endPage
         } else {
             endPageTextField.stringValue = ""
         }
-        if let type = paper.value(forKey: "type") as? String {
+        if let type = article.value(forKey: "type") as? String {
             typeTextField.stringValue = type
         } else {
             typeTextField.stringValue = ""
         }
-        if let url = paper.value(forKey: "url") as? String {
+        if let url = article.value(forKey: "url") as? String {
             let urlString = NSMutableAttributedString(string: url)
             urlString.addAttribute(NSLinkAttributeName, value: url, range: NSMakeRange(0, url.characters.count))
             urlString.addAttribute(NSFontAttributeName, value: NSFont.systemFont(ofSize: NSFont.smallSystemFontSize()), range: NSMakeRange(0, url.characters.count))
@@ -119,17 +119,17 @@ class ArticlePropertiesViewController: NSViewController {
         } else {
             urlTextField.stringValue = ""
         }
-        if let relatedRecords = paper.value(forKey: "relatedRecords") as? String {
+        if let relatedRecords = article.value(forKey: "relatedRecords") as? String {
             relatedRecordsTextField.stringValue = relatedRecords
         } else {
             relatedRecordsTextField.stringValue = ""
         }
-        if let abstract = paper.value(forKey: "abstract") as? String {
+        if let abstract = article.value(forKey: "abstract") as? String {
     		abstractTextField.stringValue = abstract
     	} else {
     		abstractTextField.stringValue = ""
     	}
-        if let date = paper.value(forKey: "date") as? String {
+        if let date = article.value(forKey: "date") as? String {
             dateTextField.stringValue = date
         } else {
             dateTextField.stringValue = ""

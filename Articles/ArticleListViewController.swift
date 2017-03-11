@@ -1,6 +1,6 @@
 //
 //  ArticleListViewController.swift
-//  Papers
+//  Articles
 //
 //  Created by Jordan Guerguiev on 2017-02-22.
 //  Copyright © 2017 Jordan Guerguiev. All rights reserved.
@@ -34,11 +34,11 @@ class ArticleListViewController: NSViewController, NSTableViewDelegate, NSTableV
         pdfPreview.layer?.backgroundColor = CGColor.white
     }
 
-    func updatePDFPreview(paper : Paper) {
+    func updatePDFPreview(article : Article) {
         // Update PDF Preview image
         pdfPreview.layer?.backgroundColor = CGColor.white
         
-        if let pdfLocation = paper.value(forKey: "pdfLocation") as? String {
+        if let pdfLocation = article.value(forKey: "pdfLocation") as? String {
             pdfPreview.image = NSImage(byReferencingFile: NSString(string: pdfLocation).expandingTildeInPath as String)
         } else {
             pdfPreview.image = nil
@@ -61,39 +61,39 @@ class ArticleListViewController: NSViewController, NSTableViewDelegate, NSTableV
         ArticlePropertiesViewController?.clearViews()
     }
 
-    func updateViews(paper : Paper) {
-        if let title = paper.value(forKey: "title") as? String {
+    func updateViews(article : Article) {
+        if let title = article.value(forKey: "title") as? String {
             titleLabel.stringValue = title
         } else {
             titleLabel.stringValue = ""
         }
         
-        if let authors = paper.value(forKey: "authors") as? String {
+        if let authors = article.value(forKey: "authors") as? String {
             authorsLabel.stringValue = authors
         } else {
             authorsLabel.stringValue = ""
         }
 
-    	updatePDFPreview(paper: paper)
-        ArticlePropertiesViewController?.updateViews(paper: paper)
+    	updatePDFPreview(article: article)
+        ArticlePropertiesViewController?.updateViews(article: article)
     }
 
-    func updatePaperFromViews(paper : Paper) {
-    	ArticlePropertiesViewController?.updatePaperFromViews(paper: paper)
+    func updateArticleFromViews(article : Article) {
+    	ArticlePropertiesViewController?.updateArticleFromViews(article: article)
     }
 
     func tableViewSelectionDidChange(_ notification: Notification) {
         // Get selected rows
         let indexes = table.selectedRowIndexes
 
-        mainController.papersSelected(indexes: indexes)
+        mainController.articlesSelected(indexes: indexes)
     }
     
     func numberOfRows(in: NSTableView) -> Int {
-        return mainController.filteredPaperData.count
+        return mainController.filteredArticleData.count
     }
     
-    func selectPapers(indexes: IndexSet) {
+    func selectArticles(indexes: IndexSet) {
         table.selectRowIndexes(indexes, byExtendingSelection: false)
     }
     
@@ -102,10 +102,10 @@ class ArticleListViewController: NSViewController, NSTableViewDelegate, NSTableV
         
         let result = tableView.make(withIdentifier: tableColumn!.identifier, owner: self) as! NSTableCellView
         
-        // Get the corresponding paper for this row
-        let paper = mainController.filteredPaperData[row]
+        // Get the corresponding article for this row
+        let article = mainController.filteredArticleData[row]
     
-        if let val = paper.value(forKey: tableColumn!.identifier) as? String {
+        if let val = article.value(forKey: tableColumn!.identifier) as? String {
             result.textField?.stringValue = val
         } else {
             result.textField?.stringValue = ""
@@ -113,7 +113,7 @@ class ArticleListViewController: NSViewController, NSTableViewDelegate, NSTableV
         return result
     }
 
-    @IBAction func importPaper(sender: AnyObject) {
+    @IBAction func importArticle(sender: AnyObject) {
         let dialog = NSOpenPanel()
         
         dialog.allowedFileTypes = ["ris", "nbib"]
@@ -124,7 +124,7 @@ class ArticleListViewController: NSViewController, NSTableViewDelegate, NSTableV
             if (result != nil) {
                 let path = result!.path
 
-                mainController.importPapers(path: path)
+                mainController.importArticles(path: path)
             }
         } else {
             // User clicked on "Cancel"
@@ -132,13 +132,13 @@ class ArticleListViewController: NSViewController, NSTableViewDelegate, NSTableV
         }
     }
 
-    func updateSelectedPaper(sender: AnyObject) {
-    	mainController.updateSelectedPaper()
+    func updateSelectedArticle(sender: AnyObject) {
+    	mainController.updateSelectedArticle()
     }
 
-    func deleteSelectedPapers(sender: Any?) {
+    func deleteSelectedArticles(sender: Any?) {
         let indexes = table.selectedRowIndexes
-    	mainController.deleteSelectedPapers(indexes: indexes)
+    	mainController.deleteSelectedArticles(indexes: indexes)
     }
     
     func tableView(_ tableView: NSTableView, writeRowsWith rowIndexes: IndexSet, to pboard: NSPasteboard) -> Bool {

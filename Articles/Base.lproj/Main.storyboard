@@ -138,7 +138,7 @@
                                         <menuItem isSeparatorItem="YES" id="WRV-NI-Exz"/>
                                         <menuItem title="Edit Properties..." tag="1" keyEquivalent="e" id="qv2-RX-Ws6">
                                             <connections>
-                                                <action selector="editSelectedPaperWithSender:" target="Ady-hI-5gd" id="n2r-jo-5f2"/>
+                                                <action selector="editSelectedArticleWithSender:" target="Ady-hI-5gd" id="n2r-jo-5f2"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Cut" keyEquivalent="x" id="uRl-iY-unG">
@@ -1047,7 +1047,7 @@ Gw
                                         </buttonCell>
                                     </button>
                                     <connections>
-                                        <action selector="importPaperWithSender:" target="B8D-0N-5wS" id="2ZG-Tg-llA"/>
+                                        <action selector="importArticleWithSender:" target="B8D-0N-5wS" id="2ZG-Tg-llA"/>
                                     </connections>
                                 </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="1BDC026A-A8F2-491F-A30E-41C438FB09F6" label="Delete" paletteLabel="Delete" image="NSStopProgressTemplate" id="pMW-GF-XoK">

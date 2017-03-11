@@ -1,6 +1,6 @@
 //
 //  CountButton.swift
-//  Papers
+//  Articles
 //
 //  Created by Jordan Guerguiev on 2017-02-26.
 //  Copyright © 2017 Jordan Guerguiev. All rights reserved.

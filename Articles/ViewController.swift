@@ -17,15 +17,15 @@ class ViewController: NSViewController {
     
     weak var windowController: WindowController!
 
-    func importPapers(path : String) {
+    func importArticles(path : String) {
         let fileExtension = (path as NSString).pathExtension
         
         referenceReader = ReferenceReader()
         var title, authors, journal, abstract, issn, volume, issue, startPage, endPage, type, url, relatedRecords, date : String
-        var paperPropertyDicts: [Dictionary<String, String>] = []
+        var articlePropertyDicts: [Dictionary<String, String>] = []
         
         if (fileExtension == "ris") {
-            paperPropertyDicts = referenceReader.readRISFile(path: path)
+            articlePropertyDicts = referenceReader.readRISFile(path: path)
             
         } else if (fileExtension == "nbib") {
             (title, authors, journal, abstract, issn, volume,
@@ -36,7 +36,7 @@ class ViewController: NSViewController {
 
         let pdfLocation = ""
         
-        for paperPropertyDict in paperPropertyDicts {
+        for articlePropertyDict in articlePropertyDicts {
             let id = ProcessInfo.processInfo.globallyUniqueString
             
             let filename = id + "." + fileExtension
@@ -49,58 +49,58 @@ class ViewController: NSViewController {
             
             try! fileManager.copyItem(atPath: path, toPath: newLocation)
             
-            title          = paperPropertyDict["title"]!
-            authors        = paperPropertyDict["authors"]!
-            journal        = paperPropertyDict["journal"]!
-            abstract       = paperPropertyDict["abstract"]!
-            issn           = paperPropertyDict["issn"]!
-            volume         = paperPropertyDict["volume"]!
-            issue          = paperPropertyDict["issue"]!
-            startPage      = paperPropertyDict["startPage"]!
-            endPage        = paperPropertyDict["endPage"]!
-            type           = paperPropertyDict["type"]!
-            url            = paperPropertyDict["url"]!
-            relatedRecords = paperPropertyDict["relatedRecords"]!
-            date           = paperPropertyDict["date"]!
+            title          = articlePropertyDict["title"]!
+            authors        = articlePropertyDict["authors"]!
+            journal        = articlePropertyDict["journal"]!
+            abstract       = articlePropertyDict["abstract"]!
+            issn           = articlePropertyDict["issn"]!
+            volume         = articlePropertyDict["volume"]!
+            issue          = articlePropertyDict["issue"]!
+            startPage      = articlePropertyDict["startPage"]!
+            endPage        = articlePropertyDict["endPage"]!
+            type           = articlePropertyDict["type"]!
+            url            = articlePropertyDict["url"]!
+            relatedRecords = articlePropertyDict["relatedRecords"]!
+            date           = articlePropertyDict["date"]!
 
-            let fetch = NSFetchRequest<Paper>(entityName: "Paper")
+            let fetch = NSFetchRequest<Article>(entityName: "Article")
             let predicate = NSPredicate(format: "title == %@", title)
             fetch.predicate = predicate
             
             let result : Array? = try! managedContext.fetch(fetch)
             
             if (result?.isEmpty)! {
-                addPaper(title: title, authors: authors, journal: journal, pdfLocation: pdfLocation, abstract: abstract, id: id,
+                addArticle(title: title, authors: authors, journal: journal, pdfLocation: pdfLocation, abstract: abstract, id: id,
                          issn: issn, volume: volume, issue: issue, startPage: startPage, endPage: endPage, type: type, url: url,
                          relatedRecords: relatedRecords, date: date)
             }
         }
     }
 
-    func addPaper(title: String?, authors: String?, journal: String?, pdfLocation: String?, abstract: String?, id: String?,
+    func addArticle(title: String?, authors: String?, journal: String?, pdfLocation: String?, abstract: String?, id: String?,
                   issn: String?, volume: String?, issue: String?, startPage: String?, endPage: String?, type: String?,
                   url: String?, relatedRecords: String?, date: String?) {
         // get the entity from the Core Data model called "Item"
-        let entity = NSEntityDescription.entity(forEntityName:"Paper", in: managedContext)
+        let entity = NSEntityDescription.entity(forEntityName:"Article", in: managedContext)
         // insert a new "Item"
-        let paper = Paper(entity: entity!, insertInto: managedContext)
+        let article = Article(entity: entity!, insertInto: managedContext)
         
         // set the values of the "name" and "value" attribute
-        paper.setValue(title, forKey: "title")
-        paper.setValue(authors, forKey: "authors")
-        paper.setValue(journal, forKey: "journal")
-        paper.setValue(pdfLocation, forKey: "pdfLocation")
-        paper.setValue(abstract, forKey: "abstract")
-        paper.setValue(issn, forKey: "issn")
-        paper.setValue(volume, forKey: "volume")
-        paper.setValue(issue, forKey: "issue")
-        paper.setValue(startPage, forKey: "startPage")
-        paper.setValue(endPage, forKey: "endPage")
-        paper.setValue(type, forKey: "type")
-        paper.setValue(url, forKey: "url")
-        paper.setValue(relatedRecords, forKey: "relatedRecords")
-        paper.setValue(date, forKey: "date")
-        paper.setValue(id, forKey: "id")
+        article.setValue(title, forKey: "title")
+        article.setValue(authors, forKey: "authors")
+        article.setValue(journal, forKey: "journal")
+        article.setValue(pdfLocation, forKey: "pdfLocation")
+        article.setValue(abstract, forKey: "abstract")
+        article.setValue(issn, forKey: "issn")
+        article.setValue(volume, forKey: "volume")
+        article.setValue(issue, forKey: "issue")
+        article.setValue(startPage, forKey: "startPage")
+        article.setValue(endPage, forKey: "endPage")
+        article.setValue(type, forKey: "type")
+        article.setValue(url, forKey: "url")
+        article.setValue(relatedRecords, forKey: "relatedRecords")
+        article.setValue(date, forKey: "date")
+        article.setValue(id, forKey: "id")
         
         do {
             // save the data
@@ -108,16 +108,16 @@ class ViewController: NSViewController {
             //refresh the table with the updated data
             fetchDataAndRefreshTable()
 
-            articleListViewController?.updateViews(paper: paper)
+            articleListViewController?.updateViews(article: article)
             tagListViewController?.refreshTable()
         } catch {
             Swift.print(error)
         }
     }
 
-    func updateSelectedPaper() {
-        if selectedPapers.count == 1 {
-            articleListViewController?.updatePaperFromViews(paper: selectedPapers[0])
+    func updateSelectedArticle() {
+        if selectedArticles.count == 1 {
+            articleListViewController?.updateArticleFromViews(article: selectedArticles[0])
             do {
                 // save the data
                 try managedContext.save()
@@ -130,26 +130,26 @@ class ViewController: NSViewController {
         }
     }
 
-    func updateSelectedPaper(properties: Dictionary<String, String>) {
-        if selectedPapers.count == 1 {
-            let paper = selectedPapers[0]
+    func updateSelectedArticle(properties: Dictionary<String, String>) {
+        if selectedArticles.count == 1 {
+            let article = selectedArticles[0]
 
             do {
-                paper.setValue(properties["title"], forKey: "title")
-                paper.setValue(properties["authors"], forKey: "authors")
-                paper.setValue(properties["journal"], forKey: "journal")
-                paper.setValue(properties["pdfLocation"], forKey: "pdfLocation")
-                paper.setValue(properties["abstract"], forKey: "abstract")
-                paper.setValue(properties["issn"], forKey: "issn")
-                paper.setValue(properties["volume"], forKey: "volume")
-                paper.setValue(properties["issue"], forKey: "issue")
-                paper.setValue(properties["startPage"], forKey: "startPage")
-                paper.setValue(properties["endPage"], forKey: "endPage")
-                paper.setValue(properties["type"], forKey: "type")
-                paper.setValue(properties["url"], forKey: "url")
-                paper.setValue(properties["relatedRecords"], forKey: "relatedRecords")
-                paper.setValue(properties["date"], forKey: "date")
-                paper.setValue(properties["id"], forKey: "id")
+                article.setValue(properties["title"], forKey: "title")
+                article.setValue(properties["authors"], forKey: "authors")
+                article.setValue(properties["journal"], forKey: "journal")
+                article.setValue(properties["pdfLocation"], forKey: "pdfLocation")
+                article.setValue(properties["abstract"], forKey: "abstract")
+                article.setValue(properties["issn"], forKey: "issn")
+                article.setValue(properties["volume"], forKey: "volume")
+                article.setValue(properties["issue"], forKey: "issue")
+                article.setValue(properties["startPage"], forKey: "startPage")
+                article.setValue(properties["endPage"], forKey: "endPage")
+                article.setValue(properties["type"], forKey: "type")
+                article.setValue(properties["url"], forKey: "url")
+                article.setValue(properties["relatedRecords"], forKey: "relatedRecords")
+                article.setValue(properties["date"], forKey: "date")
+                article.setValue(properties["id"], forKey: "id")
                 
                 do {
                     // save the data
@@ -157,7 +157,7 @@ class ViewController: NSViewController {
                     //refresh the table with the updated data
                     fetchDataAndRefreshTable()
                     
-                    articleListViewController?.updateViews(paper: paper)
+                    articleListViewController?.updateViews(article: article)
                     tagListViewController?.refreshTable()
                 } catch {
                     Swift.print(error)
@@ -166,18 +166,18 @@ class ViewController: NSViewController {
         }
     }
 
-    func deleteSelectedPapers(indexes: IndexSet) {
+    func deleteSelectedArticles(indexes: IndexSet) {
         for index in indexes.sorted().reversed() {
-            print("Deleting paper at index", index)
-            let paper = paperData[index]
-            managedContext.delete(paper)
+            print("Deleting article at index", index)
+            let article = articleData[index]
+            managedContext.delete(article)
         }
         do {
             // save the data
             try managedContext.save()
             
             // refresh the table with the updated data
-            selectedPapers = []
+            selectedArticles = []
             fetchDataAndRefreshTable()
             fetchTagData()
             
@@ -189,12 +189,12 @@ class ViewController: NSViewController {
     }
     
     // an array to hold the data
-    var paperData = [Paper]()
-    var filteredPaperData = [Paper]()
+    var articleData = [Article]()
+    var filteredArticleData = [Article]()
     var tagData = [Tag]()
     
     // a selected item
-    var selectedPapers : [Paper] = []
+    var selectedArticles : [Article] = []
     var selectedTags : [Tag] = []
     
     lazy var managedContext: NSManagedObjectContext = {
@@ -204,8 +204,8 @@ class ViewController: NSViewController {
 
     func fetchDataAndRefreshTable() {
         // create a fetch request that retrieves all items from the "Item" entity
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Paper")
-        let filteredFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Paper")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
+        let filteredFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
         if selectedTags.count != 0 {
             var predicates : [NSPredicate] = []
             for tag in selectedTags {
@@ -215,9 +215,9 @@ class ViewController: NSViewController {
             filteredFetchRequest.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
         }
         do {
-            paperData = try managedContext.fetch(fetchRequest) as! [Paper]
+            articleData = try managedContext.fetch(fetchRequest) as! [Article]
             // retrieve the data
-            filteredPaperData = try managedContext.fetch(filteredFetchRequest) as! [Paper]
+            filteredArticleData = try managedContext.fetch(filteredFetchRequest) as! [Article]
             // reload the table
             articleListViewController?.refreshTable()
         } catch {
@@ -227,8 +227,8 @@ class ViewController: NSViewController {
     
     func searchFor(text: String) {
         // create a fetch request that retrieves all items from the "Item" entity
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Paper")
-        let filteredFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Paper")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
+        let filteredFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
         if selectedTags.count != 0 {
             var predicates : [NSPredicate] = []
             for tag in selectedTags {
@@ -254,9 +254,9 @@ class ViewController: NSViewController {
         fetchRequest.sortDescriptors = [sortDescriptor]
         
         do {
-            paperData = try managedContext.fetch(fetchRequest) as! [Paper]
+            articleData = try managedContext.fetch(fetchRequest) as! [Article]
             // retrieve the data
-            filteredPaperData = try managedContext.fetch(filteredFetchRequest) as! [Paper]
+            filteredArticleData = try managedContext.fetch(filteredFetchRequest) as! [Article]
             // reload the table
             articleListViewController?.refreshTable()
         } catch {
@@ -278,14 +278,14 @@ class ViewController: NSViewController {
     }
 
     func updatePDFLocation(pdfLocation : String) {
-        if selectedPapers.count == 1 {
+        if selectedArticles.count == 1 {
             var filename : String
             
-            if let id = selectedPapers[0].value(forKey: "id") as? String {
+            if let id = selectedArticles[0].value(forKey: "id") as? String {
                 filename = id + ".pdf"
             } else {
                 let id = ProcessInfo.processInfo.globallyUniqueString
-                selectedPapers[0].setValue(id, forKey: "id")
+                selectedArticles[0].setValue(id, forKey: "id")
                 filename = id + ".pdf"
             }
             
@@ -296,10 +296,10 @@ class ViewController: NSViewController {
             }
             try! fileManager.copyItem(atPath: pdfLocation, toPath: newPDFLocation)
             
-            selectedPapers[0].setValue(newPDFLocation, forKey: "pdfLocation")
+            selectedArticles[0].setValue(newPDFLocation, forKey: "pdfLocation")
             
-            articleListViewController?.updatePDFPreview(paper: selectedPapers[0])
-            pdfViewController?.updatePDFView(paper: selectedPapers[0])
+            articleListViewController?.updatePDFPreview(article: selectedArticles[0])
+            pdfViewController?.updatePDFView(article: selectedArticles[0])
         }
     }
     
@@ -319,24 +319,24 @@ class ViewController: NSViewController {
         fetchDataAndRefreshTable()
         fetchTagData()
         
-        selectPapers(indexes: [0])
+        selectArticles(indexes: [0])
     }
 
-    func noPaperSelected() {
+    func noArticleSelected() {
         articleListViewController?.clearViews()
         pdfViewController?.clearPDFView()
     }
 
-    func papersSelected(indexes: IndexSet) {
-        selectedPapers = []
+    func articlesSelected(indexes: IndexSet) {
+        selectedArticles = []
         for index in indexes.sorted().reversed() {
-            print("User selected paper at index", index)
-            let paper = paperData[index]
-            selectedPapers.append(paper)
+            print("User selected article at index", index)
+            let article = articleData[index]
+            selectedArticles.append(article)
         }
-        if selectedPapers.count == 1 {
-            articleListViewController?.updateViews(paper: selectedPapers[0])
-            pdfViewController?.updatePDFView(paper: selectedPapers[0])
+        if selectedArticles.count == 1 {
+            articleListViewController?.updateViews(article: selectedArticles[0])
+            pdfViewController?.updatePDFView(article: selectedArticles[0])
             windowController?.enableEditing(bool: true)
         } else {
             articleListViewController?.clearViews()
@@ -344,8 +344,8 @@ class ViewController: NSViewController {
         }
     }
     
-    func selectPapers(indexes: IndexSet) {
-        articleListViewController?.selectPapers(indexes: indexes)
+    func selectArticles(indexes: IndexSet) {
+        articleListViewController?.selectArticles(indexes: indexes)
     }
     
     var articleListViewController: ArticleListViewController?
