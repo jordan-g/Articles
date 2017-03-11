@@ -226,6 +226,8 @@ class ViewController: NSViewController {
     }
     
     func searchFor(text: String) {
+        searching = true
+        
         // create a fetch request that retrieves all items from the "Item" entity
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
         let filteredFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
@@ -326,12 +328,20 @@ class ViewController: NSViewController {
         articleListViewController?.clearViews()
         pdfViewController?.clearPDFView()
     }
+    
+    var searching: Bool = false
 
     func articlesSelected(indexes: IndexSet) {
         selectedArticles = []
         for index in indexes.sorted().reversed() {
             print("User selected article at index", index)
-            let article = articleData[index]
+            var article: Article
+            if searching {
+                article = filteredArticleData[index]
+            } else {
+                article = articleData[index]
+            }
+            
             selectedArticles.append(article)
         }
         if selectedArticles.count == 1 {
